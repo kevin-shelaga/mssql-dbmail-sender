@@ -1,0 +1,59 @@
+apiVersion: batch/v1beta1
+kind: CronJob
+metadata:
+  name: mssql-dbmail-sender
+  namespace: backend
+  labels:
+    app: mssql-dbmail-sender
+  annotations:
+    sidecar.istio.io/inject: "false"
+    linkerd.io/inject: disabled
+spec:
+  schedule: "*/1 * * * *"
+  startingDeadlineSeconds: 3600
+  concurrencyPolicy: Forbid
+  jobTemplate:
+    metadata:
+      labels:
+        app: mssql-dbmail-sender
+      annotations:
+        sidecar.istio.io/inject: "false"
+        linkerd.io/inject: disabled
+    spec:
+      template:
+        metadata:
+          labels:
+            app: mssql-dbmail-sender
+          annotations:
+            sidecar.istio.io/inject: "false"
+            linkerd.io/inject: disabled
+        spec:
+          containers:
+            - name: mssql-dbmail-sender
+              image: kevinshelaga/mssql-dbmail-sender:latest
+              env:
+                - name: ENVIRONMENT
+                  value: "Development"
+                - name: PROCESS_NAME
+                  valueFrom:
+                    fieldRef:
+                      fieldPath: metadata.name
+                - name: GormConnectionString
+                  valueFrom:
+                    secretKeyRef:
+                      name: backend-secrets
+                      key: GormConnectionString
+              resources:
+                limits:
+                  cpu: 200m
+                  memory: 200Mi
+                requests:
+                  cpu: 100m
+                  memory: 100Mi
+              terminationMessagePath: "/dev/termination-log"
+              terminationMessagePolicy: File
+              imagePullPolicy: Always
+              securityContext:
+                privileged: false
+          restartPolicy: OnFailure
+          terminationGracePeriodSeconds: 30
