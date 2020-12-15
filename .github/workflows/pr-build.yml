@@ -51,7 +51,7 @@ jobs:
           curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
           chmod u+x ./kustomize
       - name: Copy Manifests
-        run: cp -a ./manifests/. .
+        run: cp -a ./k8s/. .
       - name: Deploy
         run: |-
           ./kustomize edit set image kevinshelaga/$IMAGE:tag=kevinshelaga/$IMAGE:$VERSION
