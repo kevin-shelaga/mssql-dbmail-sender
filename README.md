@@ -1,4 +1,4 @@
-# Microsoft Sql Server Database Mail Sender
+# Microsoft Sql Server Database Mail Sender - WIP
 
 ![GitHub go.mod Go version](https://img.shields.io/github/go-mod/go-version/kevin-shelaga/mssql-dbmail-sender)
 [![Go Report Card](https://goreportcard.com/badge/github.com/kevin-shelaga/mssql-dbmail-sender)](https://goreportcard.com/report/github.com/kevin-shelaga/mssql-dbmail-sender)
